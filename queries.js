@@ -1,13 +1,14 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'api',
-  password: 'postgres',
+  user: 'sbpghhbs',
+  host: 'mahmud.db.elephantsql.com',
+  database: 'sbpghhbs',
+  password: 'z5yDjqnD4HZMFsJrjY9MD3xLhAFUXcYY',
   port: 5432,
 })
+
 const getUsers = (request, response) => {
-  pool.query('SELECT * FROM api.users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -18,7 +19,7 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM api.users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -27,9 +28,10 @@ const getUserById = (request, response) => {
 }
 
 const createUser = (request, response) => {
-  const { name, email } = request.body
+  const { username, email, password} = request.body
+  var createdTime = Date.now();
 
-  pool.query('INSERT INTO api.users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
+  pool.query('INSERT INTO users (username, email, password, created_time) VALUES ($1, $2, $3, to_timestamp($4 / 1000.0))', [username, email, password, createdTime], (error, results) => {
     if (error) {
       throw error
     }
@@ -39,11 +41,11 @@ const createUser = (request, response) => {
 
 const updateUser = (request, response) => {
   const id = parseInt(request.params.id)
-  const { name, email } = request.body
+  const { username, email } = request.body
 
   pool.query(
-    'UPDATE api.users SET name = $1, email = $2 WHERE id = $3',
-    [name, email, id],
+    'UPDATE api.users SET username = $1, email = $2 WHERE id = $3',
+    [username, email, id],
     (error, results) => {
       if (error) {
         throw error
@@ -56,7 +58,7 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('DELETE FROM api.users WHERE id = $1', [id], (error, results) => {
+  pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
