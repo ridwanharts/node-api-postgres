@@ -40,7 +40,7 @@ const getLoginUser = (request, response) => {
       response.status(404).json({ message: 'User not found' });
     } else {
       // Compare the provided password with the stored password
-      if (providedPassword === user.password) {
+      if (password === user.password) {
         // Passwords match, authentication successful
         response.status(200).json({ message: 'Authentication successful' });
       } else {
