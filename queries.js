@@ -27,6 +27,31 @@ const getUserById = (request, response) => {
   })
 }
 
+const getLoginUser = (request, response) => {
+  const { username, password} = request.body
+
+  pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
+    if (error) {
+      throw error
+    }
+    const user = results.rows[0];
+    if (!user) {
+      // User not found
+      response.status(404).json({ message: 'User not found' });
+    } else {
+      // Compare the provided password with the stored password
+      if (providedPassword === user.password) {
+        // Passwords match, authentication successful
+        response.status(200).json({ message: 'Authentication successful' });
+      } else {
+        // Passwords don't match, authentication failed
+        response.status(401).json({ message: 'Authentication failed' });
+      }
+    }
+
+  })
+}
+
 const createUser = (request, response) => {
   const { username, email, password} = request.body
   var createdTime = Date.now();
@@ -69,6 +94,7 @@ const deleteUser = (request, response) => {
 module.exports = {
   getUsers,
   getUserById,
+  getLoginUser,
   createUser,
   updateUser,
   deleteUser,
