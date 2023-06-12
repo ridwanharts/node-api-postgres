@@ -17,10 +17,10 @@ app.get('/', (request, response) => {
 
 app.get('/users', db.getUsers)
 app.get('/users/:id', db.getUserById)
-app.get('/login', db.getLoginUser)
-app.post('/createUsers', db.createUser)
-app.put('/updateUsers/:id', db.updateUser)
-app.delete('/deleteUsers/:id', db.deleteUser)
+app.post('/login', db.loginUser)
+app.post('/createUser', db.createUser)
+app.put('/updateUser/:id', db.updateUser)
+app.delete('/deleteUser/:id', db.deleteUser)
 
 app.listen(port, () => {
   console.log(`App running on port ${port}.`)

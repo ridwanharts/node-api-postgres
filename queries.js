@@ -27,7 +27,7 @@ const getUserById = (request, response) => {
   })
 }
 
-const getLoginUser = (request, response) => {
+const loginUser = (request, response) => {
   const { username, password} = request.body
 
   pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
@@ -94,7 +94,7 @@ const deleteUser = (request, response) => {
 module.exports = {
   getUsers,
   getUserById,
-  getLoginUser,
+  loginUser,
   createUser,
   updateUser,
   deleteUser,
