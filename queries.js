@@ -29,7 +29,7 @@ const getUserById = (request, response) => {
 
 const loginUser = (request, response) => {
   const { username, password} = request.body
-
+  console.log(`Login ${request.body}.`)
   pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
     if (error) {
       throw error
